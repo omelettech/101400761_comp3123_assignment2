@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 
 interface EmployeeProps {
@@ -53,7 +54,16 @@ const Employee = ({}: EmployeeProps) => {
     const findEmployee = () => {
         //TODO: Place find emp logic
         console.log("hello emp")
+        //this will only change the selected employee state
+        // then be used by deleteemp OR the modal.
     };
+
+    function deleteEmployee(id:string,event:any) {
+        event.stopPropagation(); // Prevent row click from being triggered
+
+        console.log("deleted")
+    }
+
     return (
         <div>
             <button onClick={handleLogout}>Logout</button>
@@ -94,7 +104,11 @@ const Employee = ({}: EmployeeProps) => {
                             <td>{employee.date_of_joining.slice(0,10)}</td>
                             <td>{employee.department}</td>
                             <td>
-
+                                <i
+                                    className="fas fa-trash delete-icon"
+                                    style={{ color: 'red', cursor: 'pointer',fontSize:32}}
+                                    onClick={(e) => deleteEmployee(employee.id,e)}
+                                ></i>
                             </td>
 
                         </tr>
