@@ -6,7 +6,7 @@ import "react-activity/dist/library.css"
 
 const backend_API = axios.create({
     baseURL: "https://comp3123-useremp.vercel.app/api/v1",
-    headers: { "Content-Type": "application/json" },
+    headers: {"Content-Type": "application/json"},
 })
 const Login: React.FC = () => {
     const [email, setEmail] = useState("");
@@ -24,7 +24,7 @@ const Login: React.FC = () => {
                 }
             )
             console.log(response.data)
-        }catch (e){
+        } catch (e) {
             console.error(e)
         }
 
@@ -32,16 +32,16 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+        <div style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
             <h1>Login</h1>
             {!loading && <form>
                 <label>
                     Email:
-                    <input type="email" required/>
+                    <input value={email} type="email" required onChange={(e)=>setEmail(e.target.value)}/>
                 </label>
                 <label>
                     Password:
-                    <input type="password" required/>
+                    <input value={password} type="password" required onChange={(e)=>setPassword(e.target.value)}/>
                 </label>
                 <button type="button" onClick={handleLogin}>
                     Login
