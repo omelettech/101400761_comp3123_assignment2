@@ -34,7 +34,7 @@ const Login: React.FC = () => {
     return (
         <div style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
             <h1>Login</h1>
-            {!loading && <form>
+            {!loading && <form style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
                 <label>
                     Email:
                     <input value={email} type="email" required onChange={(e)=>setEmail(e.target.value)}/>
