@@ -71,7 +71,14 @@ const Employee = ({}: EmployeeProps) => {
             <h1>Employee Dashboard</h1>
             <p>Welcome to the employee dashboard!</p>
             <button onClick={addEmployee}>Add Employee +</button>
-            <table style={{width: "100%", borderCollapse: "collapse", border:1,borderWidth:1,borderStyle:"solid"}}>
+            <table style={{
+                width: "100%",
+                borderCollapse: "collapse",
+                border: 1,
+                borderWidth: 1,
+                borderStyle: "solid",
+
+            }}>
                 <thead>
                 <tr>
                     {/*<th>ID</th>*/}
@@ -95,6 +102,7 @@ const Employee = ({}: EmployeeProps) => {
                                 textDecoration:"underline",
                                 color:"blue",
                         }}
+                            className={"datas"}
                         >
                             {/*<td>{employee._id}</td>*/}
                             <td>{`${employee.first_name} ${employee.last_name}`}</td>
@@ -103,10 +111,10 @@ const Employee = ({}: EmployeeProps) => {
                             <td>${employee.salary.toLocaleString()}</td>
                             <td>{employee.date_of_joining.slice(0,10)}</td>
                             <td>{employee.department}</td>
-                            <td>
+                            <td >
                                 <i
                                     className="fas fa-trash delete-icon"
-                                    style={{ color: 'red', cursor: 'pointer',fontSize:32}}
+                                    style={{width:"100%"}}
                                     onClick={(e) => deleteEmployee(employee.id,e)}
                                 ></i>
                             </td>
