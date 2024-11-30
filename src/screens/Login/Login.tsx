@@ -1,11 +1,12 @@
 import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import axios from "axios/index";
-import ActivityIndicator from "react-activity/dist/shared/ActivityIndicator";
+import axios from "axios";
+import {Spinner} from "react-activity";
+import "react-activity/dist/library.css"
 
 const backend_API = axios.create({
     baseURL: "https://comp3123-useremp.vercel.app/api/v1",
-    headers: {"Content-Type": "application/json"}
+    headers: { "Content-Type": "application/json" },
 })
 const Login: React.FC = () => {
     const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ const Login: React.FC = () => {
         // Placeholder for login logic
         setLoading(true)
         try {
-            const response = await backend_API.post("user/login",
+            const response = await backend_API.post("/user/login",
                 {
                     email: email, password: password
                 }
@@ -31,7 +32,7 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div>
+        <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
             <h1>Login</h1>
             {!loading && <form>
                 <label>
@@ -46,7 +47,7 @@ const Login: React.FC = () => {
                     Login
                 </button>
             </form>}
-            {loading && <ActivityIndicator defaultAnimationDuration={2}/>}
+            {loading && <Spinner/>}
             <p>
                 Don't have an account?
                 <Link to={"/signup"}>Sign up</Link>
