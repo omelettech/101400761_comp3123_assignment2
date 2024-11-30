@@ -1,0 +1,15 @@
+import React from 'react';
+import './Login.css';
+
+interface LoginProps {
+}
+
+const Login = ({}: LoginProps) => {
+    return (
+        <div>
+            <h1> This is Login page </h1>
+        </div>
+    );
+};
+
+export default Login;
