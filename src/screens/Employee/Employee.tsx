@@ -63,7 +63,11 @@ const Employee = ({}: EmployeeProps) => {
 
     function deleteEmployee(id: string, event: any) {
         event.stopPropagation(); // Prevent row click from being triggered
-
+        try {
+            axios.delete(`https://comp3123-useremp.vercel.app/api/v1/emp/employees?eid=${id}`)
+        }catch (e){
+            console.error(e)
+        }
         console.log("deleted")
     }
 
