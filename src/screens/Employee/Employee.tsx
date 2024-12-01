@@ -60,49 +60,54 @@ const Employee = ({}: EmployeeProps) => {
     };
 
 
-    const findEmployee = async (id:string) => {
-        //TODO: Place find emp logic
-        try {
-            const resp = await axios.get("https://comp3123-useremp.vercel.app/api/v1/emp/employees/"+id)
-                setSelectedEmployee(resp.data)
-
-        }catch (e){
-            console.error(e)
-        }
-        //this will only change the selected employee state
-        // then be used by deleteemp OR the modal.
-    };
 
     function deleteEmployee(id:string,event:any) {
         event.stopPropagation(); // Prevent row click from being triggered
 
         console.log("deleted")
     }
+    const findEmployee = async (id:string) => {
+        //TODO: Place find emp logic
+        setSelectedEmployee(null)
+        try {
+            const resp = await axios.get("https://comp3123-useremp.vercel.app/api/v1/emp/employees/"+id)
+            console.log(resp.data)
+            setSelectedEmployee(resp.data)
 
+        }catch (e){
+            console.error(e)
+        }
+
+    };
+
+
+    
 
     return (
         <div>
             <button onClick={handleLogout}>Logout</button>
-            <div style={{
-                position:"absolute",
-                top:"45%",
-                left:"45%",
-                backgroundColor:"grey",
-                maxWidth:"50%",
-                maxHeight:"50%",
-                width:"fit-content",
-                height:"fit-content",
-                padding:20,
+            { (selectedEmployee || addEmployee) &&
+                <div style={{
+                position: "absolute",
+                top: "45%",
+                left: "45%",
+                backgroundColor: "grey",
+                maxWidth: "50%",
+                maxHeight: "50%",
+                width: "fit-content",
+                height: "fit-content",
+                padding: 20,
             }}>
                 {
-                    selectedEmployee &&
+                    !addEmployee && selectedEmployee &&
                     <EmployeeForm employee={selectedEmployee} closeModal={closeModal}></EmployeeForm>
                 }
                 {
-
+                    !selectedEmployee && addEmployee &&
+                    <EmployeeForm closeModal={closeModal}></EmployeeForm>
                 }
 
-            </div>
+            </div>}
             <h1>Employee Dashboard</h1>
             <p>Welcome to the employee dashboard!</p>
             <button onClick={()=>setAddEmployee(true)}>Add Employee +</button>
@@ -136,7 +141,7 @@ const Employee = ({}: EmployeeProps) => {
                                 fontSize:18,
                                 textDecoration:"underline",
                                 color:"blue",
-                        }}
+                            }}
                             className={"datas"}
                         >
                             {/*<td>{employee._id}</td>*/}
@@ -163,7 +168,7 @@ const Employee = ({}: EmployeeProps) => {
                         </td>
                     </tr>
                 )}
-                </tbody>
+            </tbody>
             </table>
         </div>
     );
