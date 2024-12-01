@@ -21,14 +21,15 @@ export interface EmployeeData {
     createdAt: string
     updatedAt: string
 }
+
 const Employee = ({}: EmployeeProps) => {
     const navigate = useNavigate();
     const [filteredEmployeeList, setFilteredEmployeeList] = useState<any[] | EmployeeData[]>([])
-    const [selectedEmployee, setSelectedEmployee] = useState<EmployeeData|null>(null);
+    const [selectedEmployee, setSelectedEmployee] = useState<EmployeeData | null>(null);
     const [addEmployee, setAddEmployee] = useState(false)
 
 
-    const closeModal=()=>{
+    const closeModal = () => {
         setSelectedEmployee(null)
         setAddEmployee(false)
     }
@@ -60,57 +61,59 @@ const Employee = ({}: EmployeeProps) => {
     };
 
 
-
-    function deleteEmployee(id:string,event:any) {
+    function deleteEmployee(id: string, event: any) {
         event.stopPropagation(); // Prevent row click from being triggered
 
         console.log("deleted")
     }
-    const findEmployee = async (id:string) => {
+
+    const findEmployee = async (id: string) => {
         //TODO: Place find emp logic
-        setSelectedEmployee(null)
+        closeModal()
         try {
-            const resp = await axios.get("https://comp3123-useremp.vercel.app/api/v1/emp/employees/"+id)
+            const resp = await axios.get("https://comp3123-useremp.vercel.app/api/v1/emp/employees/" + id)
             console.log(resp.data)
             setSelectedEmployee(resp.data)
 
-        }catch (e){
+        } catch (e) {
             console.error(e)
         }
 
     };
 
 
-    
-
     return (
         <div>
             <button onClick={handleLogout}>Logout</button>
-            { (selectedEmployee || addEmployee) &&
+            {(selectedEmployee || addEmployee) &&
                 <div style={{
-                position: "absolute",
-                top: "45%",
-                left: "45%",
-                backgroundColor: "grey",
-                maxWidth: "50%",
-                maxHeight: "50%",
-                width: "fit-content",
-                height: "fit-content",
-                padding: 20,
-            }}>
-                {
-                    !addEmployee && selectedEmployee &&
-                    <EmployeeForm employee={selectedEmployee} closeModal={closeModal}></EmployeeForm>
-                }
-                {
-                    !selectedEmployee && addEmployee &&
-                    <EmployeeForm closeModal={closeModal}></EmployeeForm>
-                }
+                    position: "absolute",
+                    top: "45%",
+                    left: "45%",
+                    backgroundColor: "grey",
+                    maxWidth: "50%",
+                    maxHeight: "50%",
+                    width: "fit-content",
+                    height: "fit-content",
+                    padding: 20,
+                }}>
+                    {
+                        !addEmployee && selectedEmployee &&
+                        <EmployeeForm employee={selectedEmployee} closeModal={closeModal}></EmployeeForm>
+                    }
+                    {
+                        !selectedEmployee && addEmployee &&
+                        <EmployeeForm closeModal={closeModal}></EmployeeForm>
+                    }
 
-            </div>}
+                </div>}
             <h1>Employee Dashboard</h1>
             <p>Welcome to the employee dashboard!</p>
-            <button onClick={()=>setAddEmployee(true)}>Add Employee +</button>
+            <button onClick={() => {
+                closeModal()
+                setAddEmployee(true)
+            }}>Add Employee +
+            </button>
             <table style={{
                 width: "100%",
                 borderCollapse: "collapse",
@@ -135,12 +138,12 @@ const Employee = ({}: EmployeeProps) => {
                 {filteredEmployeeList.length > 0 ? (
                     filteredEmployeeList.map((employee) => (
                         <tr key={employee._id}
-                            onClick={()=>findEmployee(employee._id)}
+                            onClick={() => findEmployee(employee._id)}
                             style={{
-                                cursor:"pointer",
-                                fontSize:18,
-                                textDecoration:"underline",
-                                color:"blue",
+                                cursor: "pointer",
+                                fontSize: 18,
+                                textDecoration: "underline",
+                                color: "blue",
                             }}
                             className={"datas"}
                         >
@@ -149,13 +152,13 @@ const Employee = ({}: EmployeeProps) => {
                             <td>{employee.position}</td>
                             <td>{employee.email}</td>
                             <td>${employee.salary.toLocaleString()}</td>
-                            <td>{employee.date_of_joining.slice(0,10)}</td>
+                            <td>{employee.date_of_joining.slice(0, 10)}</td>
                             <td>{employee.department}</td>
-                            <td >
+                            <td>
                                 <i
                                     className="fas fa-trash delete-icon"
-                                    style={{width:"100%"}}
-                                    onClick={(e) => deleteEmployee(employee.id,e)}
+                                    style={{width: "100%"}}
+                                    onClick={(e) => deleteEmployee(employee.id, e)}
                                 ></i>
                             </td>
 
@@ -168,7 +171,7 @@ const Employee = ({}: EmployeeProps) => {
                         </td>
                     </tr>
                 )}
-            </tbody>
+                </tbody>
             </table>
         </div>
     );
