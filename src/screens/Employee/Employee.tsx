@@ -2,13 +2,14 @@ import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import EmployeeForm from "./EmployeeFOrm";
 
 
 interface EmployeeProps {
 
 }
 
-interface EmployeeData {
+export interface EmployeeData {
     _id: string
     first_name: string
     last_name: string
@@ -19,10 +20,11 @@ interface EmployeeData {
     department: string
     createdAt: string
     updatedAt: string
-} //TODO: implement types instead of "any"
+}
 const Employee = ({}: EmployeeProps) => {
     const navigate = useNavigate();
     const [filteredEmployeeList, setFilteredEmployeeList] = useState<any[] | EmployeeData[]>([])
+    const [selectedEmployee, setSelectedEmployee] = useState<EmployeeData|null>(null);
     let employeeList: any[] | EmployeeData[] = [] // to store the whole list
     useEffect(() => {
         const getAllEmployees = async () => {
@@ -51,9 +53,15 @@ const Employee = ({}: EmployeeProps) => {
     const addEmployee = () => {
 
     };
-    const findEmployee = () => {
+    const findEmployee = async (id:string) => {
         //TODO: Place find emp logic
-        console.log("hello emp")
+        try {
+            const resp = await axios.get("https://comp3123-useremp.vercel.app/api/v1/emp/employees/"+id)
+                setSelectedEmployee(resp.data)
+
+        }catch (e){
+            console.error(e)
+        }
         //this will only change the selected employee state
         // then be used by deleteemp OR the modal.
     };
@@ -64,10 +72,27 @@ const Employee = ({}: EmployeeProps) => {
         console.log("deleted")
     }
 
+
     return (
         <div>
             <button onClick={handleLogout}>Logout</button>
+            <div style={{
+                position:"absolute",
+                top:"45%",
+                left:"45%",
+                backgroundColor:"grey",
+                maxWidth:"50%",
+                maxHeight:"50%",
+                width:"fit-content",
+                height:"fit-content",
+                padding:20,
+            }}>
+                {selectedEmployee &&
+                    <EmployeeForm employee={selectedEmployee}></EmployeeForm>
 
+
+                }
+            </div>
             <h1>Employee Dashboard</h1>
             <p>Welcome to the employee dashboard!</p>
             <button onClick={addEmployee}>Add Employee +</button>
@@ -95,7 +120,7 @@ const Employee = ({}: EmployeeProps) => {
                 {filteredEmployeeList.length > 0 ? (
                     filteredEmployeeList.map((employee) => (
                         <tr key={employee._id}
-                            onClick={findEmployee}
+                            onClick={()=>findEmployee(employee._id)}
                             style={{
                                 cursor:"pointer",
                                 fontSize:18,
