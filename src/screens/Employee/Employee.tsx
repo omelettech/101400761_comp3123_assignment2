@@ -86,27 +86,24 @@ const Employee = ({}: EmployeeProps) => {
         <div>
             <button onClick={handleLogout}>Logout</button>
             {(selectedEmployee || addEmployee) &&
-                <div style={{
-                    position: "absolute",
-                    top: "45%",
-                    left: "45%",
-                    backgroundColor: "grey",
-                    maxWidth: "50%",
-                    maxHeight: "50%",
-                    width: "fit-content",
-                    height: "fit-content",
-                    padding: 20,
-                }}>
-                    {
-                        !addEmployee && selectedEmployee &&
-                        <EmployeeForm employee={selectedEmployee} closeModal={closeModal}></EmployeeForm>
-                    }
-                    {
-                        !selectedEmployee && addEmployee &&
-                        <EmployeeForm closeModal={closeModal}></EmployeeForm>
-                    }
+                <div className={"modal_background"}>
+                    <div className={"modal_form"}>
+                        <div style={{width:"100%",display:"flex",flexDirection:"row-reverse",position:"absolute",top:0,left:0}}>
+                            <button onClick={closeModal} style={{backgroundColor:"red"}}>x</button>
+                        </div>
 
-                </div>}
+                        {
+                            !addEmployee && selectedEmployee &&
+                            <EmployeeForm employee={selectedEmployee} closeModal={closeModal}></EmployeeForm>
+                        }
+                        {
+                            !selectedEmployee && addEmployee &&
+                            <EmployeeForm closeModal={closeModal}></EmployeeForm>
+                        }
+
+                    </div>
+                </div>
+            }
             <h1>Employee Dashboard</h1>
             <p>Welcome to the employee dashboard!</p>
             <button onClick={() => {
