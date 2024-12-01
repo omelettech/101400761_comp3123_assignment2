@@ -5,13 +5,26 @@ const backend_API = axios.create({
     baseURL: "https://comp3123-useremp.vercel.app/api/v1",
     headers: { "Content-Type": "application/json" },
 })
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const Signup: React.FC = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState('');
+    const [error, setError] = useState("");
     const navigate = useNavigate();
 
     const handleSignup = async () => {
+        if(!email || !password || !username){
+            setError("All fields are required")
+            return
+        }else if(!emailRegex.test(email)){
+            setError("Email must be like: test@test.test")
+            return
+        }else if(password.length<8){
+            setError("Password must be 8 or more characters")
+        }
+
         try {
             const response = await backend_API.post("/user/signup",
                 {
@@ -42,6 +55,7 @@ const Signup: React.FC = () => {
                     Password:
                     <input value={password} type="password" required onChange={(e)=>setPassword(e.target.value)}/>
                 </label>
+                <h3 style={{color:"red"}}>{error}</h3>
                 <button type="button" onClick={handleSignup}>
                     Sign Up
                 </button>

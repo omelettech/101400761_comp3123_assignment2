@@ -8,14 +8,27 @@ const backend_API = axios.create({
     baseURL: "https://comp3123-useremp.vercel.app/api/v1",
     headers: {"Content-Type": "application/json"},
 })
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const Login: React.FC = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("")
     const navigate = useNavigate();
 
     const handleLogin = async () => {
         // Placeholder for login logic
+        if(!email || !password){
+            setError("All fields are required")
+            return
+        }else if(!emailRegex.test(email)){
+            setError("Email must be like: test@test.test")
+            return
+        }
+
+
+
         setLoading(true)
         try {
             const response = await backend_API.post("/user/login",
@@ -24,11 +37,19 @@ const Login: React.FC = () => {
                 }
             )
             console.log(response.data)
+            if(response.status===200){
+                navigate("/employee")
+            }else{
+                console.log(response.data.message)
+            }
+
         } catch (e) {
             console.error(e)
+            setLoading(false)
+            setError("Wrong email or passowrd")
+
         }
 
-        navigate("/employee");
     };
 
     return (
@@ -46,6 +67,7 @@ const Login: React.FC = () => {
                 <button type="button" onClick={handleLogin}>
                     Login
                 </button>
+                <h3 style={{color:"red"}}>{error}</h3>
             </form>}
             {loading && <Spinner/>}
             <p>
