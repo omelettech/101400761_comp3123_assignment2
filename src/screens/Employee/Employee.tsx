@@ -24,9 +24,11 @@ export interface EmployeeData {
 
 const Employee = ({}: EmployeeProps) => {
     const navigate = useNavigate();
+    const [employeeList, setEmployeeList] = useState<EmployeeData[]|any[]>([]);
     const [filteredEmployeeList, setFilteredEmployeeList] = useState<any[] | EmployeeData[]>([])
     const [selectedEmployee, setSelectedEmployee] = useState<EmployeeData | null>(null);
     const [addEmployee, setAddEmployee] = useState(false)
+    const [searchQuery, setSearchQuery] = useState("");
 
 
     const closeModal = () => {
@@ -35,18 +37,18 @@ const Employee = ({}: EmployeeProps) => {
     }
 
 
-    let employeeList: any[] | EmployeeData[] = [] // to store the whole list
     useEffect(() => {
         const getAllEmployees = async () => {
             try {
                 const response = await axios.get("https://comp3123-useremp.vercel.app/api/v1/emp/employees")
-                employeeList = response.data
+                setEmployeeList(response.data)
+                setFilteredEmployeeList(employeeList)
             } catch (e) {
                 console.error(e)
             }
         }
         getAllEmployees().then(() => {
-            setFilteredEmployeeList(employeeList)
+
             console.log("Employee list has been fetched successfully!");
             console.log(employeeList); // Use employeeList here
         }).catch((error) => {
@@ -54,7 +56,25 @@ const Employee = ({}: EmployeeProps) => {
         });
 
     }, []);
+    useEffect(() => {
+        console.log(employeeList)
+        if(searchQuery===""){
+            setFilteredEmployeeList(employeeList)
+        }
+        if(employeeList){
+            const filtered = employeeList.filter((employee) => {
+                const query = searchQuery.toLowerCase();
+                return (
+                    employee.first_name.toLowerCase().includes(query) ||
+                    employee.last_name.toLowerCase().includes(query) ||
+                    employee.department.toLowerCase().includes(query) ||
+                    employee.position.toLowerCase().includes(query)
+                );
+            });
+            setFilteredEmployeeList(filtered);
+        }
 
+    }, [searchQuery]);
     const handleLogout = () => {
         // Placeholder for logout logic
         navigate("/");
@@ -115,6 +135,17 @@ const Employee = ({}: EmployeeProps) => {
                 setAddEmployee(true)
             }}>Add Employee +
             </button>
+            <div>
+                <label>
+                    Search:
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search by name, department, or position"
+                    />
+                </label>
+            </div>
             <table style={{
                 width: "100%",
                 borderCollapse: "collapse",
