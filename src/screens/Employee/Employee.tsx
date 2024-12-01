@@ -25,6 +25,15 @@ const Employee = ({}: EmployeeProps) => {
     const navigate = useNavigate();
     const [filteredEmployeeList, setFilteredEmployeeList] = useState<any[] | EmployeeData[]>([])
     const [selectedEmployee, setSelectedEmployee] = useState<EmployeeData|null>(null);
+    const [addEmployee, setAddEmployee] = useState(false)
+
+
+    const closeModal=()=>{
+        setSelectedEmployee(null)
+        setAddEmployee(false)
+    }
+
+
     let employeeList: any[] | EmployeeData[] = [] // to store the whole list
     useEffect(() => {
         const getAllEmployees = async () => {
@@ -50,9 +59,7 @@ const Employee = ({}: EmployeeProps) => {
         navigate("/");
     };
 
-    const addEmployee = () => {
 
-    };
     const findEmployee = async (id:string) => {
         //TODO: Place find emp logic
         try {
@@ -87,15 +94,18 @@ const Employee = ({}: EmployeeProps) => {
                 height:"fit-content",
                 padding:20,
             }}>
-                {selectedEmployee &&
-                    <EmployeeForm employee={selectedEmployee}></EmployeeForm>
-
+                {
+                    selectedEmployee &&
+                    <EmployeeForm employee={selectedEmployee} closeModal={closeModal}></EmployeeForm>
+                }
+                {
 
                 }
+
             </div>
             <h1>Employee Dashboard</h1>
             <p>Welcome to the employee dashboard!</p>
-            <button onClick={addEmployee}>Add Employee +</button>
+            <button onClick={()=>setAddEmployee(true)}>Add Employee +</button>
             <table style={{
                 width: "100%",
                 borderCollapse: "collapse",
