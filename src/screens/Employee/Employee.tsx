@@ -42,22 +42,19 @@ const Employee = ({}: EmployeeProps) => {
             try {
                 const response = await axios.get("https://comp3123-useremp.vercel.app/api/v1/emp/employees")
                 setEmployeeList(response.data)
-                setFilteredEmployeeList(employeeList)
+                setFilteredEmployeeList(response.data)
             } catch (e) {
                 console.error(e)
             }
         }
         getAllEmployees().then(() => {
 
-            console.log("Employee list has been fetched successfully!");
-            console.log(employeeList); // Use employeeList here
         }).catch((error) => {
             console.error("An error occurred while fetching employees:", error);
         });
 
     }, []);
     useEffect(() => {
-        console.log(employeeList)
         if(searchQuery===""){
             setFilteredEmployeeList(employeeList)
         }
@@ -88,7 +85,6 @@ const Employee = ({}: EmployeeProps) => {
         }catch (e){
             console.error(e)
         }
-        console.log("deleted")
     }
 
     const findEmployee = async (id: string) => {
@@ -96,7 +92,6 @@ const Employee = ({}: EmployeeProps) => {
         closeModal()
         try {
             const resp = await axios.get("https://comp3123-useremp.vercel.app/api/v1/emp/employees/" + id)
-            console.log(resp.data)
             setSelectedEmployee(resp.data)
 
         } catch (e) {

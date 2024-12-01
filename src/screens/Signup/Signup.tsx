@@ -31,7 +31,6 @@ const Signup: React.FC = () => {
                     username:username,email: email, password: password
                 }
             )
-            console.log(response.data)
         }catch (e){
             console.error(e)
         }

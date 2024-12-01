@@ -36,11 +36,8 @@ const Login: React.FC = () => {
                     email: email, password: password
                 }
             )
-            console.log(response.data)
             if(response.status===200){
                 navigate("/employee")
-            }else{
-                console.log(response.data.message)
             }
 
         } catch (e) {
