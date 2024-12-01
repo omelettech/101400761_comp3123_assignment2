@@ -185,7 +185,7 @@ const Employee = ({}: EmployeeProps) => {
                                 <i
                                     className="fas fa-trash delete-icon"
                                     style={{width: "100%"}}
-                                    onClick={(e) => deleteEmployee(employee.id, e)}
+                                    onClick={(e) => deleteEmployee(employee._id, e)}
                                 ></i>
                             </td>
 
